@@ -15303,7 +15303,7 @@ const dictionary = [
     document.removeEventListener("keydown", handleKeyPress)
   }
 
-  function handleMouseClick(){
+  function handleMouseClick(e){
     if(e.target,matches("[data-key]")) {
         pressKey(e.target.dataset.key)
         return
@@ -15336,5 +15336,8 @@ const dictionary = [
   }
 
   function pressKey(key){
-
+    const nextTile = guessGrid.querySelector(":not([data-letter)")
+    nextTile.dataset.letter = key.toLowerCase()
+    nextTile.textContent = key
+    nextTile.dataset.state = "active"
   }
