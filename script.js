@@ -15289,7 +15289,15 @@ const dictionary = [
     "rural",
     "shave"
   ]
+
+  const WORD_LENGTH = 5;
+  const alertContainer = document.querySelector('[data-alert-container]')
   const guessGrid = document.querySelector("[data-guess-grid]")
+  const offsetFromDate = new Date(2024, 6, 24)
+  const msOffset = Date.now() - offsetFromDate
+  const dayOffset = msOffset / 1000 / 60 / 60 / 24
+  console.log(dayOffset)
+  const targetWord = targetWords[Math.floor(dayOffset)]
 
   startIntercation()
 
@@ -15304,7 +15312,7 @@ const dictionary = [
   }
 
   function handleMouseClick(e){
-    if(e.target,matches("[data-key]")) {
+    if(e.target.matches("[data-key]")) {
         pressKey(e.target.dataset.key)
         return
     }
@@ -15336,8 +15344,45 @@ const dictionary = [
   }
 
   function pressKey(key){
-    const nextTile = guessGrid.querySelector(":not([data-letter)")
+    const activeTiles = getActiveTiles()
+    if(activeTiles.length >= WORD_LENGTH) return 
+    const nextTile = guessGrid.querySelector(":not([data-letter])")
     nextTile.dataset.letter = key.toLowerCase()
     nextTile.textContent = key
     nextTile.dataset.state = "active"
+  }
+
+  function deleteKey(){
+    const activeTiles = getActiveTiles()
+    const lastTile = activeTiles[activeTiles.length - 1]
+    if(lastTile == null) return 
+    lastTile.textContent = ''
+    delete lastTile.dataset.state
+    delete lastTile.dataset.letter
+  }
+
+  function submitGuess() {
+    const activeTiles = [...getActiveTiles()]
+    if(activeTiles.length !== WORD_LENGTH) {
+      showAlert("Not long")
+      shakeTiles(activeTiles)
+      return
+    }
+  }
+
+  function getActiveTiles() {
+    return guessGrid.querySelectorAll('[data-state="active"]')
+  }
+
+  function showAlet(message, duration = 1000) {
+    const alert = document.createElement("div")
+    alert.textContent = message
+    alert.classList.add('alert')
+    alertContainer.prepend(alert)
+    if(duration == null) return
+
+
+    setTimeout(() => {
+      alertContainer.classList.add('hide')
+    }, duration)
   }
