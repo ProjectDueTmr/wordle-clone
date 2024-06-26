@@ -15374,7 +15374,7 @@ const dictionary = [
     return guessGrid.querySelectorAll('[data-state="active"]')
   }
 
-  function showAlet(message, duration = 1000) {
+  function showAlert(message, duration = 1000) {
     const alert = document.createElement("div")
     alert.textContent = message
     alert.classList.add('alert')
@@ -15383,6 +15383,9 @@ const dictionary = [
 
 
     setTimeout(() => {
-      alertContainer.classList.add('hide')
+      alert.classList.add('hide')
+      alert.addEventListener("transitionend", () => {
+        alert.remove()
+      })
     }, duration)
   }
