@@ -93,6 +93,7 @@ body{
     justify-content: center;
     align-items: center;
     user-select: none;
+    transition: transform 250ms linear;
 }
 
 .tile[data-state="active"]{
@@ -112,6 +113,35 @@ body{
 .tile[data-state="correct"]{
     border: none;
     background-color: hsl(115, 29%, 43%);
+}
+
+.tile.shake{
+    animation: shake 250ms ease-in-out;
+}
+
+.tile.flip{
+    transform: rotateX(90deg)
+}
+
+@keyframes shake{
+    10%{
+        transform: translateX(-5%);
+    }
+    30%{
+        transform: translateX(5%);
+    }
+    50%{
+        transform: translateX(-7.5%);
+    }
+    70%{
+        transfomr: translateX(7.5%);
+    }
+    90%{
+        transfomr: translateX(5%);
+    }
+    100%{
+        transfomr: translateX(0);
+    }
 }
 
 .alert-container{

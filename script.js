@@ -15291,6 +15291,8 @@ const dictionary = [
   ]
 
   const WORD_LENGTH = 5;
+  const FLIP_ANIMATION_DURATION = 500
+  const keyboard = document.querySelector('[data-keyboard]')
   const alertContainer = document.querySelector('[data-alert-container]')
   const guessGrid = document.querySelector("[data-guess-grid]")
   const offsetFromDate = new Date(2024, 6, 24)
@@ -15368,6 +15370,38 @@ const dictionary = [
       shakeTiles(activeTiles)
       return
     }
+
+    const guess = activeTiles.reduce((word, tile) => {
+      return word + tile.dataset.letter
+    }, "")
+    if(!dictionary.includes(guess)) {
+      showAlert("Not in word list")
+      shakeTiles(activeTiles)
+      return 
+    }
+    stopInteraction()
+    activeTiles.forEach((...params) => flipTile(...params, guess))
+  }
+
+  function flipTile(tile, index, array, guess){
+    const letter = tile.dataset.letter
+    const key = keyboard.querySelectorAll(`[data-key="${letter}"]`)
+    setTimeout(() => {
+      tile.classList.add('flip')
+    }, (index * FLIP_ANIMATION_DURATION) / 2)
+    tile.addEventListener("transitionend", () => {
+      tile.classList.remove('flip')
+      if(targetWord[index] === letter) {
+        tile.dataset.state = "correct"
+        tile.classList.add('correct')
+      } else if(targetWord.includes(letter)) {
+        tile.dataset.state = 'wrong-location'
+        tile.classList.add('wrong-location')
+      } else {
+        tile.dataset.state = "wrong"
+        tile.classList.add('wrong')
+      }
+    })
   }
 
   function getActiveTiles() {
@@ -15388,4 +15422,13 @@ const dictionary = [
         alert.remove()
       })
     }, duration)
+  }
+
+  function shakeTiles(tiles){
+    tiles.forEach(tile => {
+      tile.classList.add('shake');
+      tile.addEventListener('animationend', () => {
+        tile.classList.remove('shake')
+      }, {once: true})
+    })
   }
