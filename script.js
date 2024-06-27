@@ -15292,6 +15292,7 @@ const dictionary = [
 
   const WORD_LENGTH = 5;
   const FLIP_ANIMATION_DURATION = 500
+  const DANCE_ANIMATION_DURATION = 500
   const keyboard = document.querySelector('[data-keyboard]')
   const alertContainer = document.querySelector('[data-alert-container]')
   const guessGrid = document.querySelector("[data-guess-grid]")
@@ -15299,7 +15300,6 @@ const dictionary = [
   const msOffset = Date.now() - offsetFromDate
   const dayOffset = msOffset / 1000 / 60 / 60 / 24
   const targetWord = targetWords[Math.floor(dayOffset)]
-  console.log(targetWords)
   startIntercation()
 
   function startIntercation(){
@@ -15447,9 +15447,15 @@ const dictionary = [
       stopInteraction()
       return 
     }
+
+    const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
+    if(remainingTiles.length === 0){
+      showAlert(targetWord.toUpperCase(), null)
+      stopInteraction()
+    }
   }
 
-  function danceTiles(){
+  function danceTiles(tiles){
     tiles.forEach((tile, index) => {
       setTimeout(() => {
       tile.classList.add('dance');
@@ -15459,3 +15465,4 @@ const dictionary = [
     }, (index * DANCE_ANIMATION_DURATION) / 5)
   })
   }
+  console.log(targetWord)
