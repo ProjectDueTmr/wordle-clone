@@ -15402,7 +15402,7 @@ const dictionary = [
         key.classList.add('wrong')
       }
 
-      if(index === array.length -1 ) {
+      if(index === array.length - 1 ) {
         tile.addEventListener('transitionend', () => {
           startIntercation()
           checkWinLose(guess, array)
