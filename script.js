@@ -15343,7 +15343,7 @@ const dictionary = [
       return
     }
   }
-
+    // hey
   function pressKey(key){
     const activeTiles = getActiveTiles()
     if(activeTiles.length >= WORD_LENGTH) return 
